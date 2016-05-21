@@ -22,16 +22,28 @@ attr_reader :file,
   end
 
   def test_convert_letter_into_braille_array
+    #skip
     assert_equal ["0.", "..", ".."], file.encode_to_braille("a").first
   end
 
   def test_convert_capitalized_letter_into_braille_array
+    #skip
     assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.encode_to_braille("A")
   end
 
   def test_convert_two_letters_into_braille_array
+    #skip
     assert_equal [["0.", "..", ".."],["0.","0.",".."]], file.encode_to_braille("ab")
   end
+
+  def test_convert_non_alphabetic_characters_into_braille_array
+    #skip
+    assert_equal ["..","..",".."], file.encode_to_braille(" ").first
+    assert_equal ["..","0.","00"], file.encode_to_braille("?").first
+    assert_equal [["..","00","0."], ["..","..","0."]], file.encode_to_braille("!'")
+  end
+
+  
 
   # def test_braille_converter_returns_text
   #   message = BrailleConverter.new("some text here")

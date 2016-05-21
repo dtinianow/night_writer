@@ -21,14 +21,14 @@ class NightWriter
   def encode_file_to_braille
     # I wouldn't worry about testing this method
     # unless you get everything else done
-    plain = reader.read
+    plain = reader.read.chomp
     braille = encode_to_braille(plain)
   end
 
   def encode_to_braille(message)
     #convert string to array by using chars
-    array_of_braille = turn_letters_into_braille(message.chars)
-    three_lines_of_braille = turn_braille_into_three_separate_lines(array_of_braille)
+    braille = turn_letters_into_braille(message.chars)
+    lines_of_brailles = make_lines_of_braille(braille)
     #iterate through each element and each element against the alphabet
       #if char is upcase, and not downcase
     #build new array with braille conversion values
@@ -48,9 +48,29 @@ class NightWriter
     braille
   end
 
-  def turn_array_of_braille_into_three_seperate_lines(array_of_braille)
-    braille
+  def make_lines_of_braille(array_of_braille)
+    i = 0
+    lines = [[],[],[]]
+      while i < 3
+        array_of_braille.each do |chunk_of_braille|
+          lines[i] << chunk_of_braille[i]
+        end
+        i += 1
+      end
+    lines
   end
+
+  def turn_lines_into_strings(lines)
+    string_of_lines = lines.map { |line| line.join }
+    binding.pry
+  end
+#["..0.00.0/n0.0.0."]
+#[".00.0.0./n0..0.."]
+#[".00.0.0./n0..0.."]
+
+    #Put the first element of each array in a string
+    #Put the second element of each array in a string
+    #Put the third element of each array in a string
 
 end
 
