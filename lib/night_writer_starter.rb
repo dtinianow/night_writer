@@ -25,21 +25,21 @@ class NightWriter
     braille = encode_to_braille(plain)
   end
 
-  def encode_to_braille(message)
+  def encode_to_braille(text)
     #Method that contains all the other methods
-    letters = make_array(message)
+    letters = make_array(text)
     braille = turn_into_braille(letters)
-    lines_of_braille = make_lines_of_braille(braille)
-    strings_of_braille = turn_lines_into_strings(lines_of_braille)
+    lines = make_lines(braille)
+    braille_strings = turn_into_strings(lines)
   end
 
   def make_array(message)
-    message = message.chars
+    message.chars
   end
 
-  def turn_into_braille(array_of_letters)
+  def turn_into_braille(letters)
     braille = []
-    array_of_letters.each do |letter|
+    letters.each do |letter|
       if (letter == letter.upcase) && (letter != letter.downcase)
         braille << alphabet.code[:shift]
         braille << alphabet.code[letter.downcase]
@@ -50,11 +50,11 @@ class NightWriter
     braille
   end
 
-  def make_lines_of_braille(array_of_braille)
+  def make_lines(braille)
     i = 0
     lines = [[],[],[]]
       while i < 3
-        array_of_braille.each do |chunk_of_braille|
+        braille.each do |chunk_of_braille|
           lines[i] << chunk_of_braille[i]
         end
         i += 1
@@ -62,8 +62,8 @@ class NightWriter
     lines
   end
 
-  def turn_lines_into_strings(lines_of_braille)
-    string_of_lines = lines_of_braille.map { |line| line.join }
+  def turn_into_strings(lines)
+    braille_strings = lines.map { |line| line.join }
   end
 
 

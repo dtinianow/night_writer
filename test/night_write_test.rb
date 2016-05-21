@@ -23,32 +23,53 @@ attr_reader :file,
   end
 
   def test_convert_message_into_array_of_letters
-    assert_equal ["a"], make_array("a")
-    assert_equal ["This is a message!"], make_array("This is a message!")
+    #skip
+    assert_equal ["a"], file.make_array("a")
+    assert_equal ["A", " ", "m", "e", "s", "s", "a", "g", "e", "!"], file.make_array("A message!")
   end
 
   def test_convert_letter_into_braille_array
-    skip
-    assert_equal ["0.", "..", ".."], file.("a").first
+    #skip
+    letters = file.make_array("a")
+    assert_equal ["0.", "..", ".."], file.turn_into_braille(letters).first
   end
 
   def test_convert_capitalized_letter_into_braille_array
-    skip
-    assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.encode_to_braille("A")
+    #skip
+    letters = file.make_array("A")
+    assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.turn_into_braille(letters)
   end
 
   def test_convert_two_letters_into_braille_array
-    skip
-    assert_equal [["0.", "..", ".."],["0.","0.",".."]], file.encode_to_braille("ab")
+    #skip
+    letters = file.make_array("ab")
+    assert_equal [["0.", "..", ".."],["0.","0.",".."]], file.turn_into_braille(letters)
   end
 
   def test_convert_non_alphabetic_characters_into_braille_array
-    skip
-    assert_equal ["..","..",".."], file.encode_to_braille(" ").first
-    assert_equal ["..","0.","00"], file.encode_to_braille("?").first
-    assert_equal [["..","00","0."], ["..","..","0."]], file.encode_to_braille("!'")
+    #skip
+    char1 = file.make_array(" ")
+    char2 = file.make_array("?")
+    char3 = file.make_array("!'")
+    assert_equal ["..","..",".."], file.turn_into_braille(char1).first
+    assert_equal ["..","0.","00"], file.turn_into_braille(char2).first
+    assert_equal [["..","00","0."], ["..","..","0."]], file.turn_into_braille(char3)
   end
 
+  def test_turn_braille_array_into_lines_of_braille
+    #skip
+    letters = file.make_array("Hi!")
+    braille = file.turn_into_braille(letters)
+    assert_equal [["..", "0.", ".0", ".."], ["..", "00", "0.", "00"], [".0", "..", "..", "0."]], file.make_lines(braille)
+  end
+
+  def test_turn_lines_of_braille_into_strings
+    #skip
+    letters = file.make_array("Hi!")
+    braille = file.turn_into_braille(letters)
+    lines = file.make_lines(braille)
+    assert_equal ["..0..0..", "..000.00", ".0....0."], file.turn_into_strings(lines)
+  end
   # def test_covert_braille_array_into_lines
   #   assert_equal [["..", "00", "0.", ".0", ".0", "0.", "00", "0."],
   #                 ["..", "..", ".0", "0.", "0.", "..", "00", ".0"],
