@@ -3,25 +3,41 @@ require 'minitest/pride'
 require 'pry'
 require './lib/night_writer_starter'
 require './lib/alphabet'
+require './lib/braille_converter'
 
 class NightWriterTest < Minitest::Test
 
-attr_reader :alphabet
+attr_reader :file,
+            :alphabet
 
   def setup
-    alphabet = Alphabet.new
+    @file = NightWriter.new
   end
 
   def test_alphabet_has_letters_and_braille_values
     #skip
-    assert alphabet.code.has_key?("a")
-    assert alphabet.code.has_value?(["0.","..",".."])
-    assert_equal ["0.",".0","00"], alphabet.code["z"]
+    assert file.alphabet.code.has_key?("a")
+    assert file.alphabet.code.has_value?(["0.","..",".."])
+    assert_equal ["0.",".0","00"], file.alphabet.code["z"]
   end
 
-  def test_braille_converter_prints_out_three_lines_of_text
-
+  def test_convert_letter_into_braille_array
+    assert_equal ["0.", "..", ".."], file.encode_to_braille("a").first
   end
+
+  def test_convert_capitalized_letter_into_braille_array
+    assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.encode_to_braille("A")
+  end
+
+  def test_convert_two_letters_into_braille_array
+    assert_equal [["0.", "..", ".."],["0.","0.",".."]], file.encode_to_braille("ab")
+  end
+
+  # def test_braille_converter_returns_text
+  #   message = BrailleConverter.new("some text here")
+  #   assert_equal "some text here", message.text
+  # end
+
   # def test_can_read_a_message_and_return_character_count
   #   #setup
   #   bc = BrailleConverter.new()
