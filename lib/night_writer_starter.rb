@@ -26,16 +26,18 @@ class NightWriter
   end
 
   def encode_to_braille(message)
-    #convert string to array by using chars
-    braille = turn_letters_into_braille(message.chars)
-    lines_of_brailles = make_lines_of_braille(braille)
-    #iterate through each element and each element against the alphabet
-      #if char is upcase, and not downcase
-    #build new array with braille conversion values
-    #
+    #Method that contains all the other methods
+    letters = make_array(message)
+    braille = turn_into_braille(letters)
+    lines_of_braille = make_lines_of_braille(braille)
+    strings_of_braille = turn_lines_into_strings(lines_of_braille)
   end
 
-  def turn_letters_into_braille(array_of_letters)
+  def make_array(message)
+    message = message.chars
+  end
+
+  def turn_into_braille(array_of_letters)
     braille = []
     array_of_letters.each do |letter|
       if (letter == letter.upcase) && (letter != letter.downcase)
@@ -60,10 +62,13 @@ class NightWriter
     lines
   end
 
-  def turn_lines_into_strings(lines)
-    string_of_lines = lines.map { |line| line.join }
-    binding.pry
+  def turn_lines_into_strings(lines_of_braille)
+    string_of_lines = lines_of_braille.map { |line| line.join }
   end
+
+
+
+
 #["..0.00.0/n0.0.0."]
 #[".00.0.0./n0..0.."]
 #[".00.0.0./n0..0.."]

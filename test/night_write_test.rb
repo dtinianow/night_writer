@@ -12,38 +12,48 @@ attr_reader :file,
 
   def setup
     @file = NightWriter.new
+    @alphabet = Alphabet.new
   end
 
   def test_alphabet_has_letters_and_braille_values
     #skip
-    assert file.alphabet.code.has_key?("a")
-    assert file.alphabet.code.has_value?(["0.","..",".."])
-    assert_equal ["0.",".0","00"], file.alphabet.code["z"]
+    assert alphabet.code.has_key?("a")
+    assert alphabet.code.has_value?(["0.","..",".."])
+    assert_equal ["0.",".0","00"], alphabet.code["z"]
+  end
+
+  def test_convert_message_into_array_of_letters
+    assert_equal ["a"], make_array("a")
+    assert_equal ["This is a message!"], make_array("This is a message!")
   end
 
   def test_convert_letter_into_braille_array
-    #skip
-    assert_equal ["0.", "..", ".."], file.encode_to_braille("a").first
+    skip
+    assert_equal ["0.", "..", ".."], file.("a").first
   end
 
   def test_convert_capitalized_letter_into_braille_array
-    #skip
+    skip
     assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.encode_to_braille("A")
   end
 
   def test_convert_two_letters_into_braille_array
-    #skip
+    skip
     assert_equal [["0.", "..", ".."],["0.","0.",".."]], file.encode_to_braille("ab")
   end
 
   def test_convert_non_alphabetic_characters_into_braille_array
-    #skip
+    skip
     assert_equal ["..","..",".."], file.encode_to_braille(" ").first
     assert_equal ["..","0.","00"], file.encode_to_braille("?").first
     assert_equal [["..","00","0."], ["..","..","0."]], file.encode_to_braille("!'")
   end
 
-  
+  # def test_covert_braille_array_into_lines
+  #   assert_equal [["..", "00", "0.", ".0", ".0", "0.", "00", "0."],
+  #                 ["..", "..", ".0", "0.", "0.", "..", "00", ".0"],
+  #                 [".0", "0.", "..", "0.", "0.", "..", "..", ".."]], file.
+  # end
 
   # def test_braille_converter_returns_text
   #   message = BrailleConverter.new("some text here")
@@ -81,5 +91,4 @@ attr_reader :file,
   #   #access the infomration, store it in a string
   #   #How many characters are in a strin?
   # end
-
 end
