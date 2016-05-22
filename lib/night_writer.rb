@@ -48,6 +48,7 @@ class NightWriter
   end
 
   def make_lines(braille)
+    binding.pry
     i = 0
     lines = [[],[],[]]
       while i < 3

@@ -31,6 +31,7 @@ class NightReader
   end
 
   def group_by_line(line_pieces)
+    binding.pry
     unjoined_lines = [[],[],[]]
     line_pieces.each do |piece|
       unjoined_lines[0] << piece if line_pieces.index(piece) % 3 == 0
