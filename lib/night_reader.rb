@@ -22,7 +22,9 @@ class NightReader
     unjoined_lines = group_by_line(line_pieces)
     lines = join_lines(unjoined_lines)
     ungrouped_pairs = find_all_pairs(lines)
-    pairs = group_by_pairs(ungrouped_pairs)
+    pairs = group_pairs(ungrouped_pairs)
+    braille_key = create_braille_key(pairs)
+    message = turn_into_english(braille_key)
   end
 
   def make_array(braille)
@@ -51,9 +53,24 @@ class NightReader
     pairs = ungrouped_pairs.map { |pair| pair.each_slice(1).to_a }
   end
 
-  #Turn braille into array
-  #Iterate through every third line and shovel it into an array
-    # Join all the new elements together
-  #
+  def create_braille_key(pairs)
+    iteration = 0
+    braille_key = []
+    while iteration < pairs.first.length
+      line = 0
+      code = []
+      while line < 3
+        code << pairs[line][iteration]
+        line += 1
+      end
+      iteration += 1
+      braille_key << code
+    end
+    braille_key
+  end
+
+  def turn_into_english(braille_key)
+
+  end
 
 end
