@@ -1,10 +1,10 @@
-require './lib/night_writer_starter'
-require './lib/braille_converter'
+require './lib/night_writer'
 require './lib/alphabet'
+require './lib/file_reader'
 require 'pry'
 
 original_file = NightWriter.new
-original_file.encode_file_to_braille
+night_writer = original_file.encode_file_to_braille
 new_file = File.open(ARGV[1], 'a+')
 
 # original_file.length #Length of original file
@@ -13,7 +13,7 @@ new_file = File.open(ARGV[1], 'a+')
 # turned_to_braille = original_file.some_method_here
 # text_to_convert = BrailleConverter.new(text)
 
-# File.write(ARGV[1], original_file.read) #Alternative way to write to a file
+File.write(ARGV[1], night_writer) #Alternative way to write to a file
 # new_file.puts text
 # new_file.puts text
 # new_file.puts text

@@ -1,1 +1,1 @@
-Message
+This is a very long message!  This message is long so we can break the line here.

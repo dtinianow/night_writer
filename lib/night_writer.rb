@@ -1,13 +1,6 @@
 require './lib/alphabet'
-
+require './lib/file_reader'
 require 'pry'
-
-class FileReader
-  def read
-    filename = ARGV[0]
-    File.read(filename)
-  end
-end
 
 class NightWriter
   attr_reader :reader,
@@ -31,6 +24,8 @@ class NightWriter
     braille = turn_into_braille(letters)
     lines = make_lines(braille)
     braille_strings = turn_into_strings(lines)
+    strings = add_line_breaks(braille_strings)
+    final = prepare_for_printing(strings)
   end
 
   def make_array(message)
@@ -66,16 +61,14 @@ class NightWriter
     braille_strings = lines.map { |line| line.join }
   end
 
+  def add_line_breaks(braille_strings)
+    strings = braille_strings.map { |string| string << "\n"}
+  end
 
+  def prepare_for_printing(strings)
+    strings.join
+  end
 
-
-#["..0.00.0/n0.0.0."]
-#[".00.0.0./n0..0.."]
-#[".00.0.0./n0..0.."]
-
-    #Put the first element of each array in a string
-    #Put the second element of each array in a string
-    #Put the third element of each array in a string
 
 end
 

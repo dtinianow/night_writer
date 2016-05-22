@@ -1,9 +1,9 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
-require './lib/night_writer_starter'
+require './lib/night_writer'
 require './lib/alphabet'
-require './lib/braille_converter'
+require './lib/file_reader'
 
 class NightWriterTest < Minitest::Test
 
@@ -70,6 +70,24 @@ attr_reader :file,
     lines = file.make_lines(braille)
     assert_equal ["..0..0..", "..000.00", ".0....0."], file.turn_into_strings(lines)
   end
+
+  def test_add_line_breaks_to_end_of_strings
+    letters = file.make_array("Hi!")
+    braille = file.turn_into_braille(letters)
+    lines = file.make_lines(braille)
+    strings = file.turn_into_strings(lines)
+    assert_equal ["..0..0..\n", "..000.00\n", ".0....0.\n"], file.add_line_breaks(strings)
+  end
+
+  def test_convert_array_into_single_string
+    letters = file.make_array("Hi!")
+    braille = file.turn_into_braille(letters)
+    lines = file.make_lines(braille)
+    strings = file.turn_into_strings(lines)
+    final = file.add_line_breaks(strings)
+    assert_equal "..0..0..\n..000.00\n.0....0.\n", file.prepare_for_printing(strings)
+  end
+
   # def test_covert_braille_array_into_lines
   #   assert_equal [["..", "00", "0.", ".0", ".0", "0.", "00", "0."],
   #                 ["..", "..", ".0", "0.", "0.", "..", "00", ".0"],
