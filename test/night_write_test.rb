@@ -20,6 +20,10 @@ attr_reader :file,
     assert alphabet.code.has_key?("a")
     assert alphabet.code.has_value?(["0.","..",".."])
     assert_equal ["0.",".0","00"], alphabet.code["z"]
+    assert alphabet.code.has_key?(" ")
+    assert_equal ["..", "..", ".0"], alphabet.code[:shift]
+    refute alphabet.code.has_key?("&")
+    assert_equal nil, alphabet.code["$"]
   end
 
   def test_convert_message_into_array_of_letters

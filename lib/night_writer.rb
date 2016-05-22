@@ -3,18 +3,18 @@ require './lib/file_reader'
 require 'pry'
 
 class NightWriter
-  attr_reader :reader,
+  attr_reader :file,
               :alphabet
 
   def initialize
-    @reader = FileReader.new
+    @file = FileReader.new
     @alphabet = Alphabet.new
   end
 
   def encode_file_to_braille
     # I wouldn't worry about testing this method
     # unless you get everything else done
-    plain = reader.read.chomp
+    plain = file.read.chomp
     braille = encode_to_braille(plain)
   end
 
@@ -67,7 +67,7 @@ class NightWriter
   # newly added
   #Need to have each element in array as an array
   # def length_check(braille_strings)
-  #   braille_strings.each_slice(40)
+  #   braille_strings.each_slice(80)
   # end
 
 
