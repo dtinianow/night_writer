@@ -20,12 +20,14 @@ class NightWriter
 
   def encode_to_braille(text)
     #Method that contains all the other methods
-    letters = make_array(text)
-    braille = turn_into_braille(letters)
-    lines = make_lines(braille)
-    braille_strings = turn_into_strings(lines)
-    strings = add_line_breaks(braille_strings)
-    final = prepare_for_printing(strings)
+    # letters = make_array(text)
+    # braille = turn_into_braille(letters)
+    # lines = make_lines(braille)
+    # braille_strings = turn_into_strings(lines)
+    # # braille_strings = length_check(braille_strings) #newly added
+    # strings = add_line_breaks(braille_strings)
+    # prepare_for_printing(strings)
+    prepare_for_printing(add_line_breaks(length_check(turn_into_strings(make_lines(turn_into_braille(make_array(text)))))))
   end
 
   def make_array(message)
@@ -57,8 +59,22 @@ class NightWriter
     lines
   end
 
+
   def turn_into_strings(lines)
     braille_strings = lines.map { |line| line.join }
+  end
+
+  # newly added
+  def length_check(braille_strings)
+    extra = []
+      braille_strings.each do |string|
+        if string.length > 80
+          extra << string.slice!(80)
+        end
+      braille_strings
+    end
+    braille_strings << extra
+    binding.pry
   end
 
   def add_line_breaks(braille_strings)

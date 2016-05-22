@@ -11,7 +11,7 @@ attr_reader :file,
             :alphabet
 
   def setup
-    @file = NightWriter.new
+    @file = NightReader.new
     @alphabet = Alphabet.new
   end
 
