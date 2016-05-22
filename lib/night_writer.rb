@@ -20,14 +20,14 @@ class NightWriter
 
   def encode_to_braille(text)
     #Method that contains all the other methods
-    # letters = make_array(text)
-    # braille = turn_into_braille(letters)
-    # lines = make_lines(braille)
-    # braille_strings = turn_into_strings(lines)
-    # # braille_strings = length_check(braille_strings) #newly added
-    # strings = add_line_breaks(braille_strings)
-    # prepare_for_printing(strings)
-    prepare_for_printing(add_line_breaks(length_check(turn_into_strings(make_lines(turn_into_braille(make_array(text)))))))
+    letters = make_array(text)
+    braille = turn_into_braille(letters)
+    lines = make_lines(braille)
+    braille_strings = turn_into_strings(lines)
+    # braille_strings = length_check(braille_strings) #newly added
+    strings = add_line_breaks(braille_strings)
+    prepare_for_printing(strings)
+    # prepare_for_printing(add_line_breaks(length_check(turn_into_strings(make_lines(turn_into_braille(make_array(text)))))))
   end
 
   def make_array(message)
@@ -65,17 +65,11 @@ class NightWriter
   end
 
   # newly added
-  def length_check(braille_strings)
-    extra = []
-      braille_strings.each do |string|
-        if string.length > 80
-          extra << string.slice!(80)
-        end
-      braille_strings
-    end
-    braille_strings << extra
-    binding.pry
-  end
+  #Need to have each element in array as an array
+  # def length_check(braille_strings)
+  #   braille_strings.each_slice(40)
+  # end
+
 
   def add_line_breaks(braille_strings)
     strings = braille_strings.map { |string| string << "\n"}

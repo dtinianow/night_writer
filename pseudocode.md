@@ -1,3 +1,5 @@
+This is a very long message!  This message is long so we can break the line here.
+
 Break it into smaller steps
 Start with turning "a" into code
 Then turn "A" into code
@@ -21,6 +23,8 @@ Account for 80 character line limit:
 If the array of characters is greater than 80 characters, break the array into smaller arrays
 Use scan method?
 
+
+From Braille
 
 <!-- If the letter is capitalized && the key is hash[array[0]] or hash[array[1]], add ".." and the corresponding characters
 Elsif the letter is capitalized && the key is hash[array[2]], add ".0" and the corresponding characters

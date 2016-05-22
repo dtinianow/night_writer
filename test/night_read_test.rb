@@ -16,7 +16,6 @@ attr_reader :file,
   end
 
   def test
-
   end
 
 end
