@@ -21,10 +21,10 @@ class NightReader
     line_pieces = make_array(braille)
     unjoined_lines = group_by_line(line_pieces)
     lines = join_lines(unjoined_lines)
-    ungrouped_pairs = find_all_pairs(lines)
-    pairs = group_pairs(ungrouped_pairs)
+    pairs = find_all_pairs(lines)
+    # pairs = group_pairs(ungrouped_pairs)
     braille_key = create_braille_key(pairs)
-    message = turn_into_english(braille_key)
+    # message = turn_into_english(braille_key)
   end
 
   def make_array(braille)
@@ -46,11 +46,7 @@ class NightReader
   end
 
   def find_all_pairs(lines)
-    ungrouped_pairs = lines.map { |line| line.scan(/../) }
-  end
-
-  def group_pairs(ungrouped_pairs)
-    pairs = ungrouped_pairs.map { |pair| pair.each_slice(1).to_a }
+    pairs = lines.map { |line| line.scan(/../) }
   end
 
   def create_braille_key(pairs)
@@ -67,10 +63,31 @@ class NightReader
       braille_key << code
     end
     braille_key
+    binding.pry
   end
 
-  def turn_into_english(braille_key)
+  # def create_braille_key(pairs)
+  #   iteration = 0
+  #   braille_key = []
+  #   while iteration < pairs.first.length
+  #     line = 0
+  #     code = []
+  #     while line < 3
+  #       code << pairs[line][iteration]
+  #       line += 1
+  #     end
+  #     iteration += 1
+  #     braille_key << code
+  #   end
+  #   braille_key
+  # end
 
-  end
+  # def turn_into_english(braille_key)
+  #   i = 0
+  #   while i < braille_key.length
+  #   key = braille_key[0].each do |key|
+  #     if
+  #     end
+  # end
 
 end
