@@ -23,14 +23,15 @@ class NightReader
     lines = join_lines(unjoined_lines)
     pairs = find_all_pairs(lines)
     braille_key = create_braille_key(pairs)
-    message = turn_into_english(braille_key)
+    text = turn_into_english(braille_key)
+    sliced_text = slice_text(text)
+    text_with_line_breaks = add_line_breaks(sliced_text)
+    join_characters(text_with_line_breaks)
   end
 
   def make_array(braille)
     line_pieces = braille.split("\n")
   end
-
-  ["..0..0..", "..000.00", ".0....0.", "..0.0.", "..0.0.", ".00.0."]
 
   def group_by_line(line_pieces)
     unjoined_lines = [[],[],[]]
@@ -69,7 +70,7 @@ class NightReader
   end
 
   def turn_into_english(braille_key)
-    message = ""
+    text = ""
     shift = false
     braille_key.each do |braille|
       if alphabet.code.key(braille) == :shift
@@ -77,13 +78,27 @@ class NightReader
         next
       end
       if shift == true
-        message << alphabet.code.key(braille).upcase
+        text << alphabet.code.key(braille).upcase
         shift = false
       else
-        message << alphabet.code.key(braille)
+        text << alphabet.code.key(braille)
       end
     end
-    message
+    text
+  end
+
+  #is_shift?
+
+  def slice_text(text)
+    sliced_text = text.chars.each_slice(80).to_a
+  end
+
+  def add_line_breaks(sliced_text)
+    text_with_line_breaks = sliced_text.each { |slice| slice.push("\n") }
+  end
+
+  def join_characters(text_with_line_breaks)
+    message = text_with_line_breaks.join
   end
 
 end

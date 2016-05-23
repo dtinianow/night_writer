@@ -14,7 +14,7 @@ class NightWriter
   def encode_file_to_braille
     # I wouldn't worry about testing this method
     # unless you get everything else done
-    plain = file.read.chomp
+    plain = file.read.delete("\n")
     braille = encode_to_braille(plain)
   end
 
@@ -48,7 +48,6 @@ class NightWriter
   end
 
   def make_lines(braille)
-    binding.pry
     i = 0
     lines = [[],[],[]]
       while i < 3
@@ -65,10 +64,11 @@ class NightWriter
     braille_strings = lines.map { |line| line.join }
   end
 
-  # newly added
-  #Need to have each element in array as an array
-  # def length_check(braille_strings)
-  #   braille_strings.each_slice(80)
+  # def add_line_breaks(braille_strings)
+  #   line1 = braille_strings[0].chars.each_slice(80).to_a
+  #   line2 = braille_strings[1].chars.each_slice(80).to_a
+  #   line3 = braille_strings[2].chars.each_slice(80).to_a
+  #   for each add an "\n" to the end of all their arrays
   # end
 
 

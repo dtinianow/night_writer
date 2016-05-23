@@ -64,32 +64,29 @@ attr_reader :file,
     #skip
     letters = file.make_array("Hi!")
     braille = file.turn_into_braille(letters)
-    assert_equal [["..", "0.", ".0", ".."], ["..", "00", "0.", "00"], [".0", "..", "..", "0."]], file.make_lines(braille)
+    expected = [["..", "0.", ".0", ".."], ["..", "00", "0.", "00"], [".0", "..", "..", "0."]]
+    assert_equal expected, file.make_lines(braille)
   end
 
   def test_turn_lines_of_braille_into_strings
     #skip
-    letters = file.make_array("Hi!")
-    braille = file.turn_into_braille(letters)
-    lines = file.make_lines(braille)
-    assert_equal ["..0..0..", "..000.00", ".0....0."], file.turn_into_strings(lines)
+    lines = [["..", "0.", ".0", ".."], ["..", "00", "0.", "00"], [".0", "..", "..", "0."]]
+    expected = ["..0..0..", "..000.00", ".0....0."]
+    assert_equal expected, file.turn_into_strings(lines)
   end
 
   def test_add_line_breaks_to_end_of_strings
-    letters = file.make_array("Hi!")
-    braille = file.turn_into_braille(letters)
-    lines = file.make_lines(braille)
-    strings = file.turn_into_strings(lines)
-    assert_equal ["..0..0..\n", "..000.00\n", ".0....0.\n"], file.add_line_breaks(strings)
+    #skip
+    braille_strings = ["..0..0..", "..000.00", ".0....0."]
+    expected = ["..0..0..\n", "..000.00\n", ".0....0.\n"]
+    assert_equal expected, file.add_line_breaks(braille_strings)
   end
 
   def test_convert_array_into_single_string
-    letters = file.make_array("Hi!")
-    braille = file.turn_into_braille(letters)
-    lines = file.make_lines(braille)
-    strings = file.turn_into_strings(lines)
-    final = file.add_line_breaks(strings)
-    assert_equal "..0..0..\n..000.00\n.0....0.\n", file.prepare_for_printing(strings)
+    #skip
+    strings = ["..0..0..\n", "..000.00\n", ".0....0.\n"]
+    expected = "..0..0..\n..000.00\n.0....0.\n"
+    assert_equal expected, file.prepare_for_printing(strings)
   end
 
   # def test_covert_braille_array_into_lines
