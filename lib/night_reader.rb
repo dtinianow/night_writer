@@ -30,13 +30,16 @@ class NightReader
     line_pieces = braille.split("\n")
   end
 
+  ["..0..0..", "..000.00", ".0....0.", "..0.0.", "..0.0.", ".00.0."]
+
   def group_by_line(line_pieces)
-    binding.pry
     unjoined_lines = [[],[],[]]
+    index = 0
     line_pieces.each do |piece|
-      unjoined_lines[0] << piece if line_pieces.index(piece) % 3 == 0
-      unjoined_lines[1] << piece if line_pieces.index(piece) % 3 == 1
-      unjoined_lines[2] << piece if line_pieces.index(piece) % 3 == 2
+      unjoined_lines[0] << piece if index % 3 == 0
+      unjoined_lines[1] << piece if index % 3 == 1
+      unjoined_lines[2] << piece if index % 3 == 2
+      index += 1
     end
     unjoined_lines
   end

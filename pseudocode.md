@@ -41,17 +41,3 @@ Save line1 as a string
 If line1 is greater than 80 characters, cut off the end and save it as a string
 If the string is greater than 80 characters, break it into an array of strings
 ["Hello world"]=
-
-
-
-
-
-
--Check the length of the message
--Create
-
-This adds text to a file:
-filename.prints("put string here")
-
-
-** ITERATE THREE SEPARATE TIMES
