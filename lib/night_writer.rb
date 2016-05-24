@@ -1,14 +1,14 @@
-require './lib/alphabet'
+require './lib/code'
 require './lib/file_reader'
 require 'pry'
 
 class NightWriter
   attr_reader :file,
-              :alphabet
+              :code
 
   def initialize
     @file = FileReader.new
-    @alphabet = Alphabet.new
+    @code = Code.new
   end
 
   def encode_file_to_braille
@@ -19,7 +19,6 @@ class NightWriter
   end
 
   def encode_to_braille(text)
-    #Method that contains all the other methods
     letters = make_array(text)
     braille = turn_into_braille(letters)
     lines = make_lines(braille)
@@ -27,7 +26,6 @@ class NightWriter
     sliced_lines = slice_lines(braille_lines)
     message = add_line_breaks(sliced_lines)
     prepare_for_printing(message)
-    # prepare_for_printing(add_line_breaks(length_check(turn_into_strings(make_lines(turn_into_braille(make_array(text)))))))
   end
 
   def make_array(message)
@@ -38,10 +36,10 @@ class NightWriter
     braille = []
     letters.each do |letter|
       if (letter == letter.upcase) && (letter != letter.downcase)
-        braille << alphabet.code[:shift]
-        braille << alphabet.code[letter.downcase]
+        braille << code.alphabet[:shift]
+        braille << code.alphabet[letter.downcase]
       else
-        braille << alphabet.code[letter]
+        braille << code.alphabet[letter]
       end
     end
     braille
@@ -63,51 +61,26 @@ class NightWriter
     braille_lines = lines.map { |line| line.join }
   end
 
-
   def slice_lines(braille_lines)
-    temp = []
+    sliced_lines = []
     x = braille_lines.first.length
     while x > 0
       braille_lines.map do |line|
         slice = line.slice!(0..79)
-        temp << slice
+        sliced_lines << slice
       end
       x -= 80
     end
-    temp
+    sliced_lines
   end
-
-  # while braille_lines.first.length > 80
-  #   braille_lines.each do |line|
-  #     slice = line.slice!(80..-1)
-  #     temp << slice
-  #   end
-
-  # def slice_lines(braille_lines)
-  #   sliced_lines = braille_lines.map do |line|
-  #     line.chars.each_slice(80).to_a << "\n"
-  #   end
-  # end
-  #if line
-    # add_line_breaks(@line1)
-    # @line2 = braille_lines[1].chars.each_slice(80).to_a
-    # add_line_breaks(@line2)
-    # @line3 = braille_lines[2].chars.each_slice(80).to_a
-    # add_line_breaks(@line3)
-
 
   def add_line_breaks(sliced_lines)
     lines = sliced_lines.map { |line_piece| line_piece << "\n" }
   end
 
-  def combine_lines
-
-  end
-
   def prepare_for_printing(message)
     message.join
   end
-
 
 end
 

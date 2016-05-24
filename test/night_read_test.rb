@@ -2,25 +2,25 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
 require './lib/night_reader'
-require './lib/alphabet'
+require './lib/code'
 require './lib/file_reader'
 
 class NightReaderTest < Minitest::Test
 
 attr_reader :file,
-            :alphabet,
+            :code,
             :input_1,
             :input_2
 
   def setup
     @file = NightReader.new
-    @alphabet = Alphabet.new
+    @code = Code.new
     @input_2 = "..0..0..\n..000.00\n.0....0.\n" #Hi!
     @input_1 = "..0..0..\n..000.00\n.0....0.\n..0.0.\n...0..\n.00.0.\n" #Hi!Ok
   end
 
   def test_turn_braille_into_array_of_pieces_of_lines
-    # skip
+    #skip
     assert_equal ["..0..0..", "..000.00", ".0....0."], file.make_array(input_2)
     assert_equal ["..0..0..", "..000.00", ".0....0.", "..0.0.", "...0..", ".00.0."], file.make_array(input_1)
   end
@@ -60,22 +60,24 @@ attr_reader :file,
   end
 
   def test_slice_english_text_into_array_80_character_lines
+    #skip
     text = "This is a very long message! This message is long so we can break the line right here."
     expected = [["T", "h", "i", "s", " ", "i", "s", " ", "a", " ", "v", "e", "r", "y", " ", "l", "o", "n", "g", " ", "m", "e", "s", "s", "a", "g", "e", "!", " ", "T", "h", "i", "s", " ", "m", "e", "s", "s", "a", "g", "e", " ", "i", "s", " ", "l", "o", "n", "g", " ", "s", "o", " ", "w", "e", " ", "c", "a", "n", " ", "b", "r", "e", "a", "k", " ", "t", "h", "e", " ", "l", "i", "n", "e", " ", "r", "i", "g", "h", "t"], [" ", "h", "e", "r", "e", "."]]
     assert_equal expected, file.slice_text(text)
   end
 
   def test_add_line_breaks_to_end_of_each_line
+    #skip
     sliced_text =[["H", "i", "!"], [" ", "O", "k"]]
     expected = [["H", "i", "!", "\n"], [" ", "O", "k", "\n"]]
     assert_equal expected, file.add_line_breaks(sliced_text)
   end
 
   def test_join_characters_to_create_message
+    #skip
     text_with_line_breaks = [["H", "i", "!", "\n"], [" ", "O", "k", "\n"]]
     expected = "Hi!\n Ok\n"
     assert_equal expected, file.join_characters(text_with_line_breaks)
   end
-
 
 end

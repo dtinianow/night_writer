@@ -1,14 +1,14 @@
-require './lib/alphabet'
+require './lib/code'
 require './lib/file_reader'
 require 'pry'
 
 class NightReader
   attr_reader :file,
-              :alphabet
+              :code
 
   def initialize
     @file = FileReader.new
-    @alphabet = Alphabet.new
+    @code = Code.new
   end
 
   def decode_file_to_english
@@ -73,20 +73,20 @@ class NightReader
     text = ""
     shift = false
     braille_key.each do |braille|
-      if alphabet.code.key(braille) == :shift
+      if code.alphabet.key(braille) == :shift
         shift = true
         next
       end
       if shift == true
-        text << alphabet.code.key(braille).upcase
+        text << code.alphabet.key(braille).upcase
         shift = false
       else
-        text << alphabet.code.key(braille)
+        text << code.alphabet.key(braille)
       end
     end
     text
   end
-  # 
+  #
   # def shift?
   #
   # end

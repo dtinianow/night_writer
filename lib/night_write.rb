@@ -1,5 +1,5 @@
 require './lib/night_writer'
-require './lib/alphabet'
+require './lib/code'
 require './lib/file_reader'
 require 'pry'
 

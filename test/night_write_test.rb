@@ -2,28 +2,28 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
 require './lib/night_writer'
-require './lib/alphabet'
+require './lib/code'
 require './lib/file_reader'
 
 class NightWriterTest < Minitest::Test
 
 attr_reader :file,
-            :alphabet
+            :code
 
   def setup
     @file = NightWriter.new
-    @alphabet = Alphabet.new
+    @code = Code.new
   end
 
   def test_alphabet_has_letters_and_braille_values
     #skip
-    assert alphabet.code.has_key?("a")
-    assert alphabet.code.has_value?(["0.","..",".."])
-    assert_equal ["0.",".0","00"], alphabet.code["z"]
-    assert alphabet.code.has_key?(" ")
-    assert_equal ["..", "..", ".0"], alphabet.code[:shift]
-    refute alphabet.code.has_key?("&")
-    assert_equal nil, alphabet.code["$"]
+    assert code.alphabet.has_key?("a")
+    assert code.alphabet.has_value?(["0.","..",".."])
+    assert_equal ["0.",".0","00"], code.alphabet["z"]
+    assert code.alphabet.has_key?(" ")
+    assert_equal ["..", "..", ".0"], code.alphabet[:shift]
+    refute code.alphabet.has_key?("&")
+    assert_equal nil, code.alphabet["$"]
   end
 
   def test_convert_message_into_array_of_letters
@@ -32,21 +32,13 @@ attr_reader :file,
     assert_equal ["A", " ", "m", "e", "s", "s", "a", "g", "e", "!"], file.make_array("A message!")
   end
 
-  def test_convert_letter_into_braille_array
+  def test_convert_letters_into_braille_array
     #skip
-    letters = file.make_array("a")
-    assert_equal ["0.", "..", ".."], file.turn_into_braille(letters).first
-  end
-
-  def test_convert_capitalized_letter_into_braille_array
-    #skip
-    letters = file.make_array("A")
-    assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.turn_into_braille(letters)
-  end
-
-  def test_convert_two_letters_into_braille_array
-    #skip
+    letter1 = file.make_array("a")
+    letter2 = file.make_array("A")
     letters = file.make_array("ab")
+    assert_equal ["0.", "..", ".."], file.turn_into_braille(letter1).first
+    assert_equal [["..", "..", ".0"],["0.", "..", ".."]], file.turn_into_braille(letter2)
     assert_equal [["0.", "..", ".."],["0.","0.",".."]], file.turn_into_braille(letters)
   end
 
@@ -75,6 +67,18 @@ attr_reader :file,
     assert_equal expected, file.turn_into_single_lines(lines)
   end
 
+  def test_slice_braille_lines_longer_than_80_chars
+    #skip
+    braille_lines = ["...00..0.0...0.0..0...0.0.0.00..0.0.0000..000..0.00.000..........00..0.0..000..0.00.000....0.0..0.0.0000...00....00...000.00..0.0.0.0.0....00.0...0..0000...0.0.0.0.......0.0..0...00...000.0.0.00..0.0..00...0.0.0.00..000..00000..0.0000..000..00000..0.0000..000..00000..0.0000..000..00000..0.0000..000..00000..0.0000..000.000.00000.0.00..",
+    "..00000.0...0.0.......0..000.0..0..0.000.....00.0...00.000......00000.0......00.0...00.0..0.0...0..0.000..0..0..00.0.......0..0.00.0......0000.0..0.0..0.0..00.000.000....0...00..00.0.....0..0..0....0.0..0.....0.00...00.00..000.....0.0..00.00..000.....0.0..00.00..000.....0.0..00.00..000.....0.0..00.00..000.....0.0.....0.0...0.000....00",
+    ".00.....0.....0.......00..0.00..0.0.0.....0...0.0.......0......00.....0...0...0.0...........0...0.0.0.....0.0....0........0.....0.....0...0.......0...0.........0....0...0..000....0......0.000.......0.0.0...0.....0.....0...0.......0.......0...0.......0.......0...0.......0.......0...0.......0.......0...0.......0.......0.0.000...0.000..0"]
+    expected = ["...00..0.0...0.0..0...0.0.0.00..0.0.0000..000..0.00.000..........00..0.0..000..0", "..00000.0...0.0.......0..000.0..0..0.000.....00.0...00.000......00000.0......00.", ".00.....0.....0.......00..0.00..0.0.0.....0...0.0.......0......00.....0...0...0.", ".00.000....0.0..0.0.0000...00....00...000.00..0.0.0.0.0....00.0...0..0000...0.0.",
+    "0...00.0..0.0...0..0.000..0..0..00.0.......0..0.00.0......0000.0..0.0..0.0..00.0", "0...........0...0.0.0.....0.0....0........0.....0.....0...0.......0...0.........", "0.0.......0.0..0...00...000.0.0.00..0.0..00...0.0.0.00..000..00000..0.0000..000.", "00.000....0...00..00.0.....0..0..0....0.0..0.....0.00...00.00..000.....0.0..00.0",
+    "0....0...0..000....0......0.000.......0.0.0...0.....0.....0...0.......0.......0.", ".00000..0.0000..000..00000..0.0000..000..00000..0.0000..000..00000..0.0000..000.", "0..000.....0.0..00.00..000.....0.0..00.00..000.....0.0..00.00..000.....0.0.....0", "..0.......0.......0...0.......0.......0...0.......0.......0...0.......0.......0.", "000.00000.0.00..",
+    ".0...0.000....00", "0.000...0.000..0"]
+    assert_equal expected, file.slice_lines(braille_lines)
+  end
+
   def test_add_line_breaks_to_end_of_text_lines
     #skip
     braille_lines = ["..0..0..", "..000.00", ".0....0."]
@@ -88,17 +92,6 @@ attr_reader :file,
     expected = "..0..0..\n..000.00\n.0....0.\n"
     assert_equal expected, file.prepare_for_printing(braille)
   end
-
-  # def test_covert_braille_array_into_lines
-  #   assert_equal [["..", "00", "0.", ".0", ".0", "0.", "00", "0."],
-  #                 ["..", "..", ".0", "0.", "0.", "..", "00", ".0"],
-  #                 [".0", "0.", "..", "0.", "0.", "..", "..", ".."]], file.
-  # end
-
-  # def test_braille_converter_returns_text
-  #   message = BrailleConverter.new("some text here")
-  #   assert_equal "some text here", message.text
-  # end
 
   # def test_can_read_a_message_and_return_character_count
   #   #setup
