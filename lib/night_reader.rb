@@ -86,8 +86,10 @@ class NightReader
     end
     text
   end
-
-  #is_shift?
+  # 
+  # def shift?
+  #
+  # end
 
   def slice_text(text)
     sliced_text = text.chars.each_slice(80).to_a

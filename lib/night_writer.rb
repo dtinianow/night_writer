@@ -23,10 +23,10 @@ class NightWriter
     letters = make_array(text)
     braille = turn_into_braille(letters)
     lines = make_lines(braille)
-    braille_strings = turn_into_strings(lines)
-    # braille_strings = length_check(braille_strings) #newly added
-    strings = add_line_breaks(braille_strings)
-    prepare_for_printing(strings)
+    braille_lines = turn_into_single_lines(lines)
+    sliced_lines = slice_lines(braille_lines)
+    message = add_line_breaks(sliced_lines)
+    prepare_for_printing(message)
     # prepare_for_printing(add_line_breaks(length_check(turn_into_strings(make_lines(turn_into_braille(make_array(text)))))))
   end
 
@@ -59,25 +59,53 @@ class NightWriter
     lines
   end
 
-
-  def turn_into_strings(lines)
-    braille_strings = lines.map { |line| line.join }
+  def turn_into_single_lines(lines)
+    braille_lines = lines.map { |line| line.join }
   end
 
-  # def add_line_breaks(braille_strings)
-  #   line1 = braille_strings[0].chars.each_slice(80).to_a
-  #   line2 = braille_strings[1].chars.each_slice(80).to_a
-  #   line3 = braille_strings[2].chars.each_slice(80).to_a
-  #   for each add an "\n" to the end of all their arrays
+
+  def slice_lines(braille_lines)
+    temp = []
+    x = braille_lines.first.length
+    while x > 0
+      braille_lines.map do |line|
+        slice = line.slice!(0..79)
+        temp << slice
+      end
+      x -= 80
+    end
+    temp
+  end
+
+  # while braille_lines.first.length > 80
+  #   braille_lines.each do |line|
+  #     slice = line.slice!(80..-1)
+  #     temp << slice
+  #   end
+
+  # def slice_lines(braille_lines)
+  #   sliced_lines = braille_lines.map do |line|
+  #     line.chars.each_slice(80).to_a << "\n"
+  #   end
   # end
+  #if line
+    # add_line_breaks(@line1)
+    # @line2 = braille_lines[1].chars.each_slice(80).to_a
+    # add_line_breaks(@line2)
+    # @line3 = braille_lines[2].chars.each_slice(80).to_a
+    # add_line_breaks(@line3)
 
 
-  def add_line_breaks(braille_strings)
-    strings = braille_strings.map { |string| string << "\n"}
+  def add_line_breaks(sliced_lines)
+    lines = sliced_lines.map { |line_piece| line_piece << "\n" }
   end
 
-  def prepare_for_printing(strings)
-    strings.join
+  def combine_lines
+
+  end
+
+  def prepare_for_printing(message)
+    message.join
   end
 
 
