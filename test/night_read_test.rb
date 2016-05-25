@@ -55,8 +55,12 @@ attr_reader :file,
 
   def test_turn_braille_key_into_message
     #skip
-    braille_key = [["..", "..", ".0"], ["0.", "00", ".."], [".0", "0.", ".."], ["..", "00", "0."], ["..", "..", ".0"], ["0.", ".0", "0."], ["0.", "..", "0."]]
-    assert_equal "Hi!Ok", file.turn_into_english(braille_key)
+    braille_key_1 = [["..", "..", ".0"], ["0.", "00", ".."], [".0", "0.", ".."], ["..", "00", "0."], ["..", "..", ".0"], ["0.", ".0", "0."], ["0.", "..", "0."]]
+    braille_key_2 = [["0.","..",".."], [".0",".0","00"], ["0.","..",".."], ["0.",".0",".."], ["..","..",".."], ["0.","..",".."]]
+    braille_key_3 = [[".0",".0","00"], ["0.","..",".."], ["00","..",".."], ["..","..",".."], ["..", "..", ".0"], ["0.","..",".."], ["..","..",".."]]
+    assert_equal "Hi!Ok", file.turn_into_english(braille_key_1)
+    assert_equal "a15 a", file.turn_into_english(braille_key_2)
+    assert_equal "13 A ", file.turn_into_english(braille_key_3)
   end
 
   def test_slice_english_text_into_array_80_character_lines

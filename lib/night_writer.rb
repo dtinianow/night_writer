@@ -39,7 +39,7 @@ class NightWriter
   def turn_into_braille(chars)
     braille = []
     using_numbers = false
-    chars.each do |char| 
+    chars.each do |char|
       if code.alphabet.has_key?(char) && using_numbers
         braille << code.alphabet[" "]
         braille << code.alphabet[char]

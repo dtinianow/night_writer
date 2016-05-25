@@ -64,26 +64,24 @@ class NightReader
     shift = false
     using_numbers = false
     braille_key.each do |char|
-      #if it sees a hash, using_numbers = true
-      #if using_numbers is true, take the value from the the numbers hash
-        #if the character is space, using_numbers is false
-        #switch back to alphabet hash
-      #otherwise take the value from the alphabet hash
-      #
       if code.alphabet.key(char) == :shift
         shift = true
-        next
-      end
-      if shift == true
+      elsif shift == true
         text << code.alphabet.key(char).upcase
         shift = false
+      elsif code.numbers.key(char) == "#"
+        using_numbers = true
+      elsif code.alphabet.key(char) == " " && using_numbers == true
+        text << code.alphabet.key(char)
+        using_numbers = false
+      elsif using_numbers == true
+        text << code.numbers.key(char)
       else
         text << code.alphabet.key(char)
       end
     end
     text
   end
-
 
   def slice_text(text)
     text.chars.each_slice(80).to_a
