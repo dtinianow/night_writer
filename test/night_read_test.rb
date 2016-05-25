@@ -9,34 +9,34 @@ class NightReaderTest < Minitest::Test
 
 attr_reader :file,
             :code,
-            :input_1,
-            :input_2
+            :braille_message_1,
+            :braille_message_2
 
   def setup
     @file = NightReader.new
     @code = Code.new
-    @input_2 = "..0..0..\n..000.00\n.0....0.\n" #Hi!
-    @input_1 = "..0..0..\n..000.00\n.0....0.\n..0.0.\n...0..\n.00.0.\n" #Hi!Ok
+    @braille_message_2 = "..0..0..\n..000.00\n.0....0.\n" #Hi!
+    @braille_message_1 = "..0..0..\n..000.00\n.0....0.\n..0.0.\n...0..\n.00.0.\n" #Hi!Ok
   end
 
-  def test_turn_braille_into_array_of_pieces_of_lines
+  def test_turn_braille_message_into_array_of_pieces_of_lines
     #skip
-    assert_equal ["..0..0..", "..000.00", ".0....0."], file.make_array(input_2)
-    assert_equal ["..0..0..", "..000.00", ".0....0.", "..0.0.", "...0..", ".00.0."], file.make_array(input_1)
+    assert_equal ["..0..0..", "..000.00", ".0....0."], file.split_braille_by_line(braille_message_2)
+    assert_equal ["..0..0..", "..000.00", ".0....0.", "..0.0.", "...0..", ".00.0."], file.split_braille_by_line(braille_message_1)
   end
 
   def test_move_pieces_of_braille_into_correct_line
     #skip
     line_pieces = ["..0..0..", "..000.00", ".0....0.", "..0.0.", "...0..", ".00.0."]
     expected = [["..0..0..", "..0.0."], ["..000.00", "...0.."], [".0....0.", ".00.0."]]
-    assert_equal expected, file.group_by_line(line_pieces)
+    assert_equal expected, file.put_line_pieces_in_order(line_pieces)
   end
 
   def test_join_pieces_of_each_line_into_single_lines
     # skip
     unjoined_lines = [["..0..0..", "..0.0."], ["..000.00", "...0.."], [".0....0.", ".00.0."]]
     expected = ["..0..0....0.0.", "..000.00...0..", ".0....0..00.0."]
-    assert_equal expected, file.join_lines(unjoined_lines)
+    assert_equal expected, file.join_line_pieces(unjoined_lines)
   end
 
   def test_seperate_each_line_into_pairs_of_braille_code
@@ -56,11 +56,11 @@ attr_reader :file,
   def test_turn_braille_key_into_message
     #skip
     braille_key_1 = [["..", "..", ".0"], ["0.", "00", ".."], [".0", "0.", ".."], ["..", "00", "0."], ["..", "..", ".0"], ["0.", ".0", "0."], ["0.", "..", "0."]]
-    braille_key_2 = [["0.","..",".."], [".0",".0","00"], ["0.","..",".."], ["0.",".0",".."], ["..","..",".."], ["0.","..",".."]]
-    braille_key_3 = [[".0",".0","00"], ["0.","..",".."], ["00","..",".."], ["..","..",".."], ["..", "..", ".0"], ["0.","..",".."], ["..","..",".."]]
+    braille_key_2 = [["0.","..",".."], [".0",".0","00"], ["0.","..",".."], ["0.",".0",".."], ["..","..",".."], ["..","..",".."], ["0.","..",".."]]
+    braille_key_3 = [[".0",".0","00"], ["0.","..",".."], ["00","..",".."], ["..","..",".."], ["..", "..", ".0"], ["0.","..",".."]]
     assert_equal "Hi!Ok", file.turn_into_english(braille_key_1)
     assert_equal "a15 a", file.turn_into_english(braille_key_2)
-    assert_equal "13 A ", file.turn_into_english(braille_key_3)
+    assert_equal "13A", file.turn_into_english(braille_key_3)
   end
 
   def test_slice_english_text_into_array_80_character_lines
@@ -84,8 +84,10 @@ attr_reader :file,
     assert_equal expected, file.join_characters(text_with_line_breaks)
   end
 
-  def test_encode_to_english
+  def test_decode_braille_to_english
     skip
+    expected = "Hi!Ok"
+    assert_equal expected, file.decode_to_english(braille_message_1)
   end
 
 end

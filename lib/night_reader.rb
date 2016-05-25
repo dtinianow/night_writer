@@ -12,15 +12,15 @@ class NightReader
   end
 
   def decode_file_to_english
-    braille = file.read.chomp
-    message = decode_to_english(braille)
+    braille_message = file.read.chomp
+    message = decode_to_english(braille_message)
   end
 
-  def decode_to_english(braille)
+  def decode_to_english(braille_message)
     # Method that contains all the other methods
-    line_pieces = make_array(braille)
-    unjoined_lines = group_by_line(line_pieces)
-    lines = join_lines(unjoined_lines)
+    line_pieces = split_braille_by_line(braille_message)
+    unjoined_lines = put_line_pieces_in_order(line_pieces)
+    lines = join_line_pieces(unjoined_lines)
     pairs = find_all_pairs(lines)
     braille_key = create_braille_key(pairs)
     text = turn_into_english(braille_key)
@@ -29,11 +29,11 @@ class NightReader
     join_characters(text_with_line_breaks)
   end
 
-  def make_array(braille)
-    braille.split("\n")
+  def split_braille_by_line(braille_message)
+    braille_message.split("\n")
   end
 
-  def group_by_line(line_pieces)
+  def put_line_pieces_in_order(line_pieces)
     unjoined_lines = [[],[],[]]
     index = 0
     line_pieces.each do |piece|
@@ -45,7 +45,7 @@ class NightReader
     unjoined_lines
   end
 
-  def join_lines(unjoined_lines)
+  def join_line_pieces(unjoined_lines)
     unjoined_lines.map { |line| line.join }
   end
 
@@ -66,15 +66,14 @@ class NightReader
     braille_key.each do |char|
       if code.alphabet.key(char) == :shift
         shift = true
-      elsif shift == true
+      elsif shift
         text << code.alphabet.key(char).upcase
         shift = false
       elsif code.numbers.key(char) == "#"
         using_numbers = true
-      elsif code.alphabet.key(char) == " " && using_numbers == true
-        text << code.alphabet.key(char)
+      elsif code.alphabet.key(char) == " " && using_numbers
         using_numbers = false
-      elsif using_numbers == true
+      elsif using_numbers
         text << code.numbers.key(char)
       else
         text << code.alphabet.key(char)
