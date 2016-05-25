@@ -80,4 +80,8 @@ attr_reader :file,
     assert_equal expected, file.join_characters(text_with_line_breaks)
   end
 
+  def test_encode_to_english
+    skip
+  end
+
 end

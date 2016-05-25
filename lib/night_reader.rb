@@ -30,7 +30,7 @@ class NightReader
   end
 
   def make_array(braille)
-    line_pieces = braille.split("\n")
+    braille.split("\n")
   end
 
   def group_by_line(line_pieces)
@@ -46,61 +46,55 @@ class NightReader
   end
 
   def join_lines(unjoined_lines)
-    lines = unjoined_lines.map { |line| line.join }
+    unjoined_lines.map { |line| line.join }
   end
 
   def find_all_pairs(lines)
-    pairs = lines.map { |line| line.scan(/../) }
+    lines.map { |line| line.scan(/../) }
   end
 
   def create_braille_key(pairs)
-    iteration = 0
-    braille_key = []
-    while iteration < pairs.first.length
-      line = 0
-      code = []
-      while line < 3
-        code << pairs[line][iteration]
-        line += 1
-      end
-      iteration += 1
-      braille_key << code
+    pairs.first.length.times.map do |i|
+      3.times.map { |line| pairs[line][i] }
     end
-    braille_key
   end
 
   def turn_into_english(braille_key)
     text = ""
     shift = false
-    braille_key.each do |braille|
-      if code.alphabet.key(braille) == :shift
+    using_numbers = false
+    braille_key.each do |char|
+      #if it sees a hash, using_numbers = true
+      #if using_numbers is true, take the value from the the numbers hash
+        #if the character is space, using_numbers is false
+        #switch back to alphabet hash
+      #otherwise take the value from the alphabet hash
+      #
+      if code.alphabet.key(char) == :shift
         shift = true
         next
       end
       if shift == true
-        text << code.alphabet.key(braille).upcase
+        text << code.alphabet.key(char).upcase
         shift = false
       else
-        text << code.alphabet.key(braille)
+        text << code.alphabet.key(char)
       end
     end
     text
   end
-  #
-  # def shift?
-  #
-  # end
+
 
   def slice_text(text)
-    sliced_text = text.chars.each_slice(80).to_a
+    text.chars.each_slice(80).to_a
   end
 
   def add_line_breaks(sliced_text)
-    text_with_line_breaks = sliced_text.each { |slice| slice.push("\n") }
+    sliced_text.each { |slice| slice.push("\n") }
   end
 
   def join_characters(text_with_line_breaks)
-    message = text_with_line_breaks.join
+    text_with_line_breaks.join
   end
 
 end

@@ -32,33 +32,55 @@ class NightWriter
     message.chars
   end
 
-  def turn_into_braille(letters)
+  def capitalized?(letter)
+    (letter == letter.upcase) && (letter != letter.downcase)
+  end
+
+  def turn_into_braille(chars)
     braille = []
-    letters.each do |letter|
-      if (letter == letter.upcase) && (letter != letter.downcase)
+    using_numbers = false
+    chars.each do |char| 
+      if code.alphabet.has_key?(char) && using_numbers
+        braille << code.alphabet[" "]
+        braille << code.alphabet[char]
+        using_numbers = false
+      elsif code.alphabet.has_key?(char)
+        braille << code.alphabet[char]
+      elsif capitalized?(char) && using_numbers
+        braille << code.alphabet[" "]
         braille << code.alphabet[:shift]
-        braille << code.alphabet[letter.downcase]
-      else
-        braille << code.alphabet[letter]
+        braille << code.alphabet[char.downcase]
+        using_numbers = false
+      elsif capitalized?(char)
+        braille << code.alphabet[:shift]
+        braille << code.alphabet[char.downcase]
+      elsif using_numbers
+        braille << code.numbers[char]
+      elsif code.numbers.has_key?(char)
+        braille << code.numbers["#"]
+        braille << code.numbers[char]
+        using_numbers = true
       end
     end
     braille
   end
 
   def make_lines(braille)
-    i = 0
-    lines = [[],[],[]]
-      while i < 3
-        braille.each do |chunk_of_braille|
-          lines[i] << chunk_of_braille[i]
-        end
-        i += 1
+    3.times.map do |i|
+      braille.map do |braille_char|
+        braille_char[i]
       end
-    lines
+    end
   end
 
+    # lines = [[],[],[]]
+    #   3.times do |i|
+    #     braille.each { |chunk_of_braille| lines[i] << chunk_of_braille[i] }
+    #   end
+    # lines
+
   def turn_into_single_lines(lines)
-    braille_lines = lines.map { |line| line.join }
+    lines.map { |line| line.join }
   end
 
   def slice_lines(braille_lines)
@@ -75,7 +97,7 @@ class NightWriter
   end
 
   def add_line_breaks(sliced_lines)
-    lines = sliced_lines.map { |line_piece| line_piece << "\n" }
+    sliced_lines.map { |line_piece| line_piece << "\n" }
   end
 
   def prepare_for_printing(message)

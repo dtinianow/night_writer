@@ -26,6 +26,12 @@ attr_reader :file,
     assert_equal nil, code.alphabet["$"]
   end
 
+  def test_letter_is_capitalized
+    #skip
+    assert file.capitalized?("A")
+    refute file.capitalized?("a")
+  end
+
   def test_convert_message_into_array_of_letters
     #skip
     assert_equal ["a"], file.make_array("a")
@@ -50,6 +56,16 @@ attr_reader :file,
     assert_equal ["..","..",".."], file.turn_into_braille(char1).first
     assert_equal ["..","0.","00"], file.turn_into_braille(char2).first
     assert_equal [["..","00","0."], ["..","..","0."]], file.turn_into_braille(char3)
+  end
+
+  def test_turn_into_braille_with_numbers
+    #skip
+    chars1 = ["h", "i", "1", " "]
+    chars2 = ["1", "A"]
+    expected1 = [["0.","00",".."], [".0","0.",".."], [".0",".0","00"], ["0.","..",".."], ["..","..",".."], ["..","..",".."]]
+    expected2 = [[".0",".0","00"], ["0.","..",".."], ["..","..",".."], ["..", "..", ".0"], ["0.","..",".."]]
+    assert_equal expected1, file.turn_into_braille(chars1)
+    assert_equal expected2, file.turn_into_braille(chars2)
   end
 
   def test_turn_braille_array_into_lines_of_braille
@@ -91,6 +107,11 @@ attr_reader :file,
     braille = ["..0..0..\n", "..000.00\n", ".0....0.\n"]
     expected = "..0..0..\n..000.00\n.0....0.\n"
     assert_equal expected, file.prepare_for_printing(braille)
+  end
+
+  def test_encode_to_braille
+    skip
+
   end
 
   # def test_can_read_a_message_and_return_character_count
