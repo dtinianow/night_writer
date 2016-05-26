@@ -71,14 +71,14 @@ class NightReader
     code.alphabet.key(char) == " "
   end
 
-  def add_letter(char)
+  def put_letter(char)
     code.alphabet.key(char)
   end
 
-  def add_number(char)
+  def put_number(char)
     code.numbers.key(char)
   end
-  
+
   def turn_into_english(braille_key)
     text = ""
     shift = false
@@ -87,44 +87,20 @@ class NightReader
       if is_capital?(char)
         shift = true
       elsif shift
-        text << add_letter(char).upcase
+        text << put_letter(char).upcase
         shift = false
       elsif is_hash?(char)
         using_numbers = true
       elsif is_space?(char) && using_numbers
         using_numbers = false
       elsif using_numbers
-        text << add_number(char)
+        text << put_number(char)
       else
-        text << add_letter(char)
+        text << put_letter(char)
       end
     end
     text
   end
-
-  # def turn_into_english(braille_key)
-  #   text = ""
-  #   shift = false
-  #   using_numbers = false
-  #   braille_key.each do |char|
-  #     if code.alphabet.key(char) == :shift
-  #       shift = true
-  #     elsif shift == true
-  #       text << code.alphabet.key(char).upcase
-  #       shift = false
-  #     elsif code.numbers.key(char) == "#"
-  #       using_numbers = true
-  #     elsif code.alphabet.key(char) == " " && using_numbers == true
-  #       text << code.alphabet.key(char)
-  #       using_numbers = false
-  #     elsif using_numbers == true
-  #       text << code.numbers.key(char)
-  #     else
-  #       text << code.alphabet.key(char)
-  #     end
-  #   end
-  #   text
-  # end
 
   def slice_text_to_fit_page(text)
     text.chars.each_slice(80).to_a

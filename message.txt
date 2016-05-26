@@ -1,2 +1,2 @@
-Here is a really long message with 1111 letters and here are many more character
-s that go beyond 80 characters
+Here is a wonderful message to test out the project.  Look how incredible it is!
+This message is also capable of numbers.  1, 2, 3, 4, 567890! Amazing!

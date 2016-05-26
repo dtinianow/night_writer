@@ -43,6 +43,14 @@ attr_reader :file,
     refute file.is_number?("a")
   end
 
+  def test_puts_a_letter
+    assert_equal ["0.","..",".."], file.put_letter("a")
+  end
+
+  def test_puts_a_number
+    assert_equal ["0.","..",".."], file.put_number("1")
+  end
+
   def test_convert_message_into_array_of_letters
     #skip
     assert_equal ["a"], file.split_message_into_chars("a")

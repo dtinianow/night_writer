@@ -53,6 +53,29 @@ attr_reader :file,
     assert_equal expected, file.create_braille_key(pairs)
   end
 
+  def test_is_capital?
+    assert file.is_capital?(["..", "..", ".0"])
+    refute file.is_capital?(["0.","..",".."])
+  end
+
+  def test_is_hash?
+    assert file.is_hash?([".0",".0","00"])
+    refute file.is_hash?(["0.","..",".."])
+  end
+
+  def test_is_space?
+    assert file.is_space?(["..","..",".."])
+    refute file.is_space?(["0.","..",".."])
+  end
+
+  def test_puts_letter
+    assert_equal "a", file.put_letter(["0.","..",".."])
+  end
+
+  def test_puts_number
+    assert_equal "1", file.put_number(["0.","..",".."])
+  end
+
   def test_turn_braille_key_into_message
     #skip
     braille_key_1 = [["..", "..", ".0"], ["0.", "00", ".."], [".0", "0.", ".."], ["..", "00", "0."], ["..", "..", ".0"], ["0.", ".0", "0."], ["0.", "..", "0."]]

@@ -80,35 +80,6 @@ class NightWriter
     braille
   end
 
-  # def turn_chars_into_braille(chars)
-  #   braille = []
-  #   using_numbers = false
-  #   chars.each do |char|
-  #     if code.alphabet.has_key?(char) && using_numbers
-  #       braille << code.alphabet[" "]
-  #       braille << code.alphabet[char]
-  #       using_numbers = false
-  #     elsif code.alphabet.has_key?(char)
-  #       braille << code.alphabet[char]
-  #     elsif is_capitalized?(char) && using_numbers
-  #       braille << code.alphabet[" "]
-  #       braille << code.alphabet[:shift]
-  #       braille << code.alphabet[char.downcase]
-  #       using_numbers = false
-  #     elsif is_capitalized?(char)
-  #       braille << code.alphabet[:shift]
-  #       braille << code.alphabet[char.downcase]
-  #     elsif using_numbers
-  #       braille << code.numbers[char]
-  #     elsif code.numbers.has_key?(char)
-  #       braille << code.numbers["#"]
-  #       braille << code.numbers[char]
-  #       using_numbers = true
-  #     end
-  #   end
-  #   braille
-  # end
-
   def sort_braille_into_lines(braille)
     3.times.map do |i|
       braille.map do |braille_chars|
