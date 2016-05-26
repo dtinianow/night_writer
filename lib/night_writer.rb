@@ -34,81 +34,80 @@ class NightWriter
   def is_capitalized?(letter)
     (letter == letter.upcase) && (letter != letter.downcase)
   end
-  #
-  # def is_letter?(char)
-  #   code.alphabet.has_key?(char)
-  # end
-  #
-  # def is_number?(char)
-  #   code.numbers.has_key?(char)
-  # end
-  #
-  # def put_letter(char)
-  #   code.alphabet[char]
-  # end
-  #
-  # def put_number(char)
-  #   code.numbers[char]
-  # end
-  #
-  #   def turn_chars_into_braille(chars)
-  #     braille = []
-  #     using_numbers = false
-  #     chars.each do |char|
-  #       if is_letter?(char) && using_numbers
-  #         braille << put_letter(" ")
-  #         braille << put_letter(char)
-  #         using_numbers = false
-  #       elsif is_letter?(char)
-  #         braille << put_letter(char)
-  #       elsif is_capitalized?(char) && using_numbers
-  #         braille << put_letter(" ")
-  #         braille << put_letter(:shift)
-  #         braille << put_letter(char.downcase)
-  #         using_numbers = false
-  #       elsif is_capitalized?(char)
-  #         braille << put_letter(:shift)
-  #         braille << put_letter(char.downcase)
-  #       elsif using_numbers
-  #         braille << put_number(char)
-  #       elsif is_number?(char)
-  #         braille << put_number("#")
-  #         braille << put_number(char)
-  #         using_numbers = true
-  #       end
-  #     end
-  #   braille
-  #   binding.pry
-  # end
 
-  def turn_chars_into_braille(chars)
-    braille = []
-    using_numbers = false
-    chars.each do |char|
-      if code.alphabet.has_key?(char) && using_numbers
-        braille << code.alphabet[" "]
-        braille << code.alphabet[char]
-        using_numbers = false
-      elsif code.alphabet.has_key?(char)
-        braille << code.alphabet[char]
-      elsif is_capitalized?(char) && using_numbers
-        braille << code.alphabet[" "]
-        braille << code.alphabet[:shift]
-        braille << code.alphabet[char.downcase]
-        using_numbers = false
-      elsif is_capitalized?(char)
-        braille << code.alphabet[:shift]
-        braille << code.alphabet[char.downcase]
-      elsif using_numbers
-        braille << code.numbers[char]
-      elsif code.numbers.has_key?(char)
-        braille << code.numbers["#"]
-        braille << code.numbers[char]
-        using_numbers = true
+  def is_letter?(char)
+    code.alphabet.has_key?(char)
+  end
+
+  def is_number?(char)
+    code.numbers.has_key?(char)
+  end
+
+  def put_letter(char)
+    code.alphabet[char]
+  end
+
+  def put_number(char)
+    code.numbers[char]
+  end
+
+    def turn_chars_into_braille(chars)
+      braille = []
+      using_numbers = false
+      chars.each do |char|
+        if is_letter?(char) && using_numbers
+          braille << put_letter(" ")
+          braille << put_letter(char)
+          using_numbers = false
+        elsif is_letter?(char)
+          braille << put_letter(char)
+        elsif is_capitalized?(char) && using_numbers
+          braille << put_letter(" ")
+          braille << put_letter(:shift)
+          braille << put_letter(char.downcase)
+          using_numbers = false
+        elsif is_capitalized?(char)
+          braille << put_letter(:shift)
+          braille << put_letter(char.downcase)
+        elsif using_numbers
+          braille << put_number(char)
+        elsif is_number?(char)
+          braille << put_number("#")
+          braille << put_number(char)
+          using_numbers = true
+        end
       end
-    end
     braille
   end
+
+  # def turn_chars_into_braille(chars)
+  #   braille = []
+  #   using_numbers = false
+  #   chars.each do |char|
+  #     if code.alphabet.has_key?(char) && using_numbers
+  #       braille << code.alphabet[" "]
+  #       braille << code.alphabet[char]
+  #       using_numbers = false
+  #     elsif code.alphabet.has_key?(char)
+  #       braille << code.alphabet[char]
+  #     elsif is_capitalized?(char) && using_numbers
+  #       braille << code.alphabet[" "]
+  #       braille << code.alphabet[:shift]
+  #       braille << code.alphabet[char.downcase]
+  #       using_numbers = false
+  #     elsif is_capitalized?(char)
+  #       braille << code.alphabet[:shift]
+  #       braille << code.alphabet[char.downcase]
+  #     elsif using_numbers
+  #       braille << code.numbers[char]
+  #     elsif code.numbers.has_key?(char)
+  #       braille << code.numbers["#"]
+  #       braille << code.numbers[char]
+  #       using_numbers = true
+  #     end
+  #   end
+  #   braille
+  # end
 
   def sort_braille_into_lines(braille)
     3.times.map do |i|
