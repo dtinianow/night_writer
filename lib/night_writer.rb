@@ -3,6 +3,7 @@ require './lib/file_reader'
 require 'pry'
 
 class NightWriter
+
   attr_reader :file,
               :code
 
@@ -12,31 +13,75 @@ class NightWriter
   end
 
   def encode_file_to_braille
-    # I wouldn't worry about testing this method
-    # unless you get everything else done
     plain = file.read.delete("\n")
     braille = encode_to_braille(plain)
   end
 
   def encode_to_braille(text)
-    letters = make_array(text)
-    braille = turn_into_braille(letters)
-    lines = make_lines(braille)
-    braille_lines = turn_into_single_lines(lines)
-    sliced_lines = slice_lines(braille_lines)
+    letters = split_message_into_chars(text)
+    braille = turn_chars_into_braille(letters)
+    lines = sort_braille_into_lines(braille)
+    braille_lines = join_line_pieces(lines)
+    sliced_lines = slice_lines_to_fit_page(braille_lines)
     message = add_line_breaks(sliced_lines)
     prepare_for_printing(message)
   end
 
-  def make_array(message)
+  def split_message_into_chars(message)
     message.chars
   end
 
-  def capitalized?(letter)
+  def is_capitalized?(letter)
     (letter == letter.upcase) && (letter != letter.downcase)
   end
+  #
+  # def is_letter?(char)
+  #   code.alphabet.has_key?(char)
+  # end
+  #
+  # def is_number?(char)
+  #   code.numbers.has_key?(char)
+  # end
+  #
+  # def put_letter(char)
+  #   code.alphabet[char]
+  # end
+  #
+  # def put_number(char)
+  #   code.numbers[char]
+  # end
+  #
+  #   def turn_chars_into_braille(chars)
+  #     braille = []
+  #     using_numbers = false
+  #     chars.each do |char|
+  #       if is_letter?(char) && using_numbers
+  #         braille << put_letter(" ")
+  #         braille << put_letter(char)
+  #         using_numbers = false
+  #       elsif is_letter?(char)
+  #         braille << put_letter(char)
+  #       elsif is_capitalized?(char) && using_numbers
+  #         braille << put_letter(" ")
+  #         braille << put_letter(:shift)
+  #         braille << put_letter(char.downcase)
+  #         using_numbers = false
+  #       elsif is_capitalized?(char)
+  #         braille << put_letter(:shift)
+  #         braille << put_letter(char.downcase)
+  #       elsif using_numbers
+  #         braille << put_number(char)
+  #       elsif is_number?(char)
+  #         braille << put_number("#")
+  #         braille << put_number(char)
+  #         using_numbers = true
+  #       end
+  #     end
+  #   braille
+  #   binding.pry
+  # end
 
-  def turn_into_braille(chars)
+  def turn_chars_into_braille(chars)
     braille = []
     using_numbers = false
     chars.each do |char|
@@ -46,12 +91,12 @@ class NightWriter
         using_numbers = false
       elsif code.alphabet.has_key?(char)
         braille << code.alphabet[char]
-      elsif capitalized?(char) && using_numbers
+      elsif is_capitalized?(char) && using_numbers
         braille << code.alphabet[" "]
         braille << code.alphabet[:shift]
         braille << code.alphabet[char.downcase]
         using_numbers = false
-      elsif capitalized?(char)
+      elsif is_capitalized?(char)
         braille << code.alphabet[:shift]
         braille << code.alphabet[char.downcase]
       elsif using_numbers
@@ -65,25 +110,19 @@ class NightWriter
     braille
   end
 
-  def make_lines(braille)
+  def sort_braille_into_lines(braille)
     3.times.map do |i|
-      braille.map do |braille_char|
-        braille_char[i]
+      braille.map do |braille_chars|
+        braille_chars[i]
       end
     end
   end
 
-    # lines = [[],[],[]]
-    #   3.times do |i|
-    #     braille.each { |chunk_of_braille| lines[i] << chunk_of_braille[i] }
-    #   end
-    # lines
-
-  def turn_into_single_lines(lines)
+  def join_line_pieces(lines)
     lines.map { |line| line.join }
   end
 
-  def slice_lines(braille_lines)
+  def slice_lines_to_fit_page(braille_lines)
     sliced_lines = []
     x = braille_lines.first.length
     while x > 0
@@ -105,5 +144,3 @@ class NightWriter
   end
 
 end
-
-puts ARGV.inspect

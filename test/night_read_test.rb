@@ -43,7 +43,7 @@ attr_reader :file,
     # skip
     lines = ["..0..0....0.0.", "..000.00...0..", ".0....0..00.0."]
     expected = [["..", "0.", ".0", "..", "..", "0.", "0."], ["..", "00", "0.", "00", "..", ".0", ".."], [".0", "..", "..", "0.", ".0", "0.", "0."]]
-    assert_equal expected, file.find_all_pairs(lines)
+    assert_equal expected, file.organize_braille_into_pairs(lines)
   end
 
   def test_create_array_of_braille_key_using_pairs
@@ -67,7 +67,7 @@ attr_reader :file,
     #skip
     text = "This is a very long message! This message is long so we can break the line right here."
     expected = [["T", "h", "i", "s", " ", "i", "s", " ", "a", " ", "v", "e", "r", "y", " ", "l", "o", "n", "g", " ", "m", "e", "s", "s", "a", "g", "e", "!", " ", "T", "h", "i", "s", " ", "m", "e", "s", "s", "a", "g", "e", " ", "i", "s", " ", "l", "o", "n", "g", " ", "s", "o", " ", "w", "e", " ", "c", "a", "n", " ", "b", "r", "e", "a", "k", " ", "t", "h", "e", " ", "l", "i", "n", "e", " ", "r", "i", "g", "h", "t"], [" ", "h", "e", "r", "e", "."]]
-    assert_equal expected, file.slice_text(text)
+    assert_equal expected, file.slice_text_to_fit_page(text)
   end
 
   def test_add_line_breaks_to_end_of_each_line
@@ -81,13 +81,16 @@ attr_reader :file,
     #skip
     text_with_line_breaks = [["H", "i", "!", "\n"], [" ", "O", "k", "\n"]]
     expected = "Hi!\n Ok\n"
-    assert_equal expected, file.join_characters(text_with_line_breaks)
+    assert_equal expected, file.prepare_for_printing(text_with_line_breaks)
   end
 
   def test_decode_braille_to_english
-    skip
-    expected = "Hi!Ok"
-    assert_equal expected, file.decode_to_english(braille_message_1)
+    #skip
+    braille_message = ".00.......0.\n.0..........\n00.......0..\n"
+    expected_1 = "Hi!Ok\n"
+    expected_2 = "1 A\n"
+    assert_equal expected_1, file.decode_to_english(braille_message_1)
+    assert_equal expected_2, file.decode_to_english(braille_message)
   end
 
 end

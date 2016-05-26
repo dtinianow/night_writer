@@ -3,6 +3,7 @@ require './lib/file_reader'
 require 'pry'
 
 class NightReader
+
   attr_reader :file,
               :code
 
@@ -12,21 +13,20 @@ class NightReader
   end
 
   def decode_file_to_english
-    braille_message = file.read.chomp
+    braille_message = file.read
     message = decode_to_english(braille_message)
   end
 
   def decode_to_english(braille_message)
-    # Method that contains all the other methods
     line_pieces = split_braille_by_line(braille_message)
     unjoined_lines = put_line_pieces_in_order(line_pieces)
     lines = join_line_pieces(unjoined_lines)
-    pairs = find_all_pairs(lines)
+    pairs = organize_braille_into_pairs(lines)
     braille_key = create_braille_key(pairs)
     text = turn_into_english(braille_key)
-    sliced_text = slice_text(text)
+    sliced_text = slice_text_to_fit_page(text)
     text_with_line_breaks = add_line_breaks(sliced_text)
-    join_characters(text_with_line_breaks)
+    prepare_for_printing(text_with_line_breaks)
   end
 
   def split_braille_by_line(braille_message)
@@ -49,7 +49,7 @@ class NightReader
     unjoined_lines.map { |line| line.join }
   end
 
-  def find_all_pairs(lines)
+  def organize_braille_into_pairs(lines)
     lines.map { |line| line.scan(/../) }
   end
 
@@ -59,6 +59,26 @@ class NightReader
     end
   end
 
+  # def is_capital?(char)
+  #    code.alphabet.key(char) == :shift
+  # end
+  #
+  # def is_hash?(char)
+  #   code.numbers.key(char) == "#"
+  # end
+  #
+  # def is_space?(char)
+  #   code.alphabet.key(char) == " "
+  # end
+  #
+  # def add_letter(char)
+  #   code.alphabet.key(char)
+  # end
+  #
+  # def add_number(char)
+  #   code.numbers.key(char)
+  # end
+
   def turn_into_english(braille_key)
     text = ""
     shift = false
@@ -66,14 +86,15 @@ class NightReader
     braille_key.each do |char|
       if code.alphabet.key(char) == :shift
         shift = true
-      elsif shift
+      elsif shift == true
         text << code.alphabet.key(char).upcase
         shift = false
       elsif code.numbers.key(char) == "#"
         using_numbers = true
-      elsif code.alphabet.key(char) == " " && using_numbers
+      elsif code.alphabet.key(char) == " " && using_numbers == true
+        text << code.alphabet.key(char)
         using_numbers = false
-      elsif using_numbers
+      elsif using_numbers == true
         text << code.numbers.key(char)
       else
         text << code.alphabet.key(char)
@@ -82,7 +103,7 @@ class NightReader
     text
   end
 
-  def slice_text(text)
+  def slice_text_to_fit_page(text)
     text.chars.each_slice(80).to_a
   end
 
@@ -90,7 +111,7 @@ class NightReader
     sliced_text.each { |slice| slice.push("\n") }
   end
 
-  def join_characters(text_with_line_breaks)
+  def prepare_for_printing(text_with_line_breaks)
     text_with_line_breaks.join
   end
 
